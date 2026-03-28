@@ -1,8 +1,8 @@
 package ferit.zadace.zadaca1
 
 fun main(){
-    val ime: String
-    val prezime: String
+    val firstName: String
+    val lastName: String
     var email: String? = null
     var age: Int? = 22
 

@@ -1,72 +1,72 @@
 package ferit.zadace.zadaca1
 
 object TransactionLogger{
-    fun log(poruka: String) {
-        println("[LOG] $poruka")
+    fun log(message: String) {
+        println("[LOG] $message")
     }
 }
 
-class BankovniRacun(val brojRacuna: String){
+class BankAccount(val accountNumber: String){
     var balance: Double = 0.0
         private set
 
-    fun uplata(iznos: Double){
-        if(iznos <= 0){
-            TransactionLogger.log("Neuspjesna uplata na racun $brojRacuna: iznos mora biti pozitivan.")
+    fun deposit(amount : Double){
+        if(amount <= 0){
+            TransactionLogger.log("Neuspjesna uplata na racun $accountNumber: iznos mora biti pozitivan.")
             return
         }
-        balance += iznos
-        TransactionLogger.log("Uplata $iznos EUR na racun $brojRacuna. Novo stanje: $balance EUR")
+        balance += amount
+        TransactionLogger.log("Uplata $amount  EUR na racun $accountNumber. Novo stanje: $balance EUR")
     }
 
-    fun isplata(iznos: Double) {
-        if (iznos <= 0) {
-            TransactionLogger.log("Neuspjesna isplata s racuna $brojRacuna: iznos mora biti pozitivan.")
+    fun withdraw(amount : Double) {
+        if (amount <= 0) {
+            TransactionLogger.log("Neuspjesna isplata s racuna $accountNumber: iznos mora biti pozitivan.")
             return
         }
-        if (iznos > balance) {
-            TransactionLogger.log("Neuspjesna isplata s racuna: nedovoljno sredstava na racunu $brojRacuna." +
-                    "Stanje: ${balance} EUR, trazeno: ${iznos} EUR")
+        if (amount > balance) {
+            TransactionLogger.log("Neuspjesna isplata s racuna: nedovoljno sredstava na racunu $accountNumber." +
+                    "Stanje: ${balance} EUR, trazeno: ${amount} EUR")
             return
         }
-        balance -= iznos
-        TransactionLogger.log("Isplata $iznos EUR s racuna $brojRacuna. Novo stanje: $balance EUR")
+        balance -= amount
+        TransactionLogger.log("Isplata $amount  EUR s racuna $accountNumber. Novo stanje: $balance EUR")
     }
 
     companion object {
-        var ukupnoRacuna: Int = 0
+        var totalAccounts: Int = 0
             private set
     }
 
     init {
-        BankovniRacun.ukupnoRacuna++
-        TransactionLogger.log("Otvoren novi racun: $brojRacuna")
+        BankAccount.totalAccounts++
+        TransactionLogger.log("Otvoren novi racun: $accountNumber")
     }
 }
 
 fun main(){
-    val racun1 = BankovniRacun("HR00100123")
-    val racun2 = BankovniRacun("HR09876543")
-    val racun3 = BankovniRacun("HR12345678")
-    val racun4 = BankovniRacun("HR11223344")
+    val account1 = BankAccount("HR00100123")
+    val account2 = BankAccount("HR09876543")
+    val account3 = BankAccount("HR12345678")
+    val account4 = BankAccount("HR11223344")
 
     println("\nTransakcije:")
-    racun1.uplata(500.0)
-    racun1.uplata(200.0)
-    racun1.isplata(100.0)
-    racun1.isplata(1000.0)
+    account1.deposit(500.0)
+    account1.deposit(200.0)
+    account1.withdraw(100.0)
+    account1.withdraw(1000.0)
 
-    racun2.uplata(1000.0)
-    racun2.isplata(250.0)
+    account2.deposit(1000.0)
+    account2.withdraw(250.0)
 
-    racun3.uplata(50.0)
+    account3.deposit(50.0)
 
-    racun4.isplata(175.0)
+    account4.withdraw(175.0)
 
     println("\nStanja racuna:")
-    println("Racun ${racun1.brojRacuna}: ${racun1.balance} EUR")
-    println("Racun ${racun2.brojRacuna}: ${racun2.balance} EUR")
-    println("Racun ${racun3.brojRacuna}: ${racun3.balance} EUR")
-    println("Racun ${racun4.brojRacuna}: ${racun4.balance} EUR")
-    println("Ukupno kreiranih racuna: ${BankovniRacun.ukupnoRacuna}")
+    println("Racun ${account1.accountNumber}: ${account1.balance} EUR")
+    println("Racun ${account2.accountNumber}: ${account2.balance} EUR")
+    println("Racun ${account3.accountNumber}: ${account3.balance} EUR")
+    println("Racun ${account4.accountNumber}: ${account4.balance} EUR")
+    println("Ukupno kreiranih racuna: ${BankAccount.totalAccounts}")
 }

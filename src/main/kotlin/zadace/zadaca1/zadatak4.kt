@@ -1,22 +1,22 @@
 package ferit.zadace.zadaca1
 
 //1.funkcija priprema, vraca odredenu vrijednost (string)
-fun pripremaKorisnickogImena(korisnickoIme: String): String{
-    return korisnickoIme.trim().lowercase()
+fun cleanUsername(username: String): String{
+    return username.trim().lowercase()
 }
 //2.funkcija provjera, vraca Boolean, true
-fun validacijaKorisnickogImena(korisnickoIme: String): Boolean{
-    if(korisnickoIme.length !in 5..15
-        || !korisnickoIme.first().isLetter()
-        || !korisnickoIme.all { it.isLetterOrDigit() || it == '_' }
-        || korisnickoIme.contains(' ')
-        || korisnickoIme.isBlank()
+fun isValidUsername(username: String): Boolean{
+    if(username.length !in 5..15
+        || !username.first().isLetter()
+        || !username.all { it.isLetterOrDigit() || it == '_' }
+        || username.contains(' ')
+        || username.isBlank()
     ) return false
     return true
 }
 
 fun main(){
-    val testniNizovi = listOf(
+    val testInputs = listOf(
         " John_doe123 ",
         "john_doe_123",
         "abc",
@@ -25,12 +25,12 @@ fun main(){
         "!invalid",
         "ime01050prezime"
     )
-    for (ime in testniNizovi){
-        val pripremljeno = pripremaKorisnickogImena(ime)
-        val ispravno = validacijaKorisnickogImena(pripremljeno)
-        println("Unos korisnickog imena: \"$ime\"")
-        println("  Pripremljeno: \"$pripremljeno\"")
-        println("  Ispravno: $ispravno")
+    for (name in testInputs){
+        val prepared = cleanUsername(name)
+        val isValid = isValidUsername(prepared)
+        println("Unos korisnickog imena: \"$name\"")
+        println("  Pripremljeno: \"$prepared\"")
+        println("  Ispravno: $isValid")
         println()
     }
 }

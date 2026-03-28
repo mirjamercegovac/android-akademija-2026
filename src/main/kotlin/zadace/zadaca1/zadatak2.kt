@@ -1,11 +1,11 @@
 package ferit.zadace.zadaca1
 
 fun main(){
-    val kodProizvoda = 2
-    val cijenaProizvoda = 2.65
-    val primljeniNovac = 4.00
+    val productCode = 2
+    val productPrice = 2.65
+    val receivedMoney = 4.00
 
-    val imePica = when(kodProizvoda){
+    val drinkName  = when(productCode){
         1 -> "Voda"
         2 -> "Cola"
         3 -> "Sok"
@@ -13,11 +13,11 @@ fun main(){
         else -> "Nepoznato pice"
     }
 
-    if(primljeniNovac >= cijenaProizvoda){
-        val ostatak = primljeniNovac - cijenaProizvoda
-        println("Pice koje se toci je $imePica, a ostatak iznosi: ${"%.2f".format(ostatak)} EUR")
+    if(receivedMoney  >= productPrice){
+        val change = receivedMoney - productPrice
+        println("Pice koje se toci je $drinkName, a ostatak iznosi: ${"%.2f".format(change )} EUR")
     }else{
-        val nedostaje = cijenaProizvoda - primljeniNovac
-        println("Nedostaje ${"%.2f".format(nedostaje)} EUR za pice $imePica.")
+        val missingAmount  = productPrice - receivedMoney
+        println("Nedostaje ${"%.2f".format(missingAmount )} EUR za pice $drinkName.")
     }
 }
