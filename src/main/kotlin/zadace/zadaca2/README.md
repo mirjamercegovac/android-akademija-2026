@@ -1,8 +1,6 @@
 # Domaća zadaća 2 - Android akademija 2026
 ## 2. Napredni Kotlin
 
----
-
 **Zadatak**
 
 Napravite mali program s klasama i svojstvima koji na jednostavan način opisuju koncept iz stvarnog svijeta.
