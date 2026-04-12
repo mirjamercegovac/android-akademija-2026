@@ -51,7 +51,6 @@ Zaslon 2 treba sadržavati:
     - unos opisa
 - gumb za spremanje (npr. `Spremi` / `Done`)
     - sprema novu bilješku ili promjene postojeće
-
 - **Važno:**
   - ovaj zaslon se koristi za:
       - dodavanje nove bilješke (polja su prazna)
