@@ -1,4 +1,4 @@
-package com.example.notesapp
+package com.example.notesapp.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,27 +23,25 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.example.notesapp.viewmodel.NoteEditViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteEditScreen(
-    existingNote: Note?,
+    noteId: Int,
+    viewModel: NoteEditViewModel,
     onBackClick: () -> Unit,
-    onSaveClick: (String, String) -> Unit
+    onDoneClick: () -> Unit
 ){
-    // ZASLON 2 - State za naslov i opis
-    var title by rememberSaveable { mutableStateOf(existingNote?.title ?: "") }
-    var description by rememberSaveable { mutableStateOf(existingNote?.description ?: "") }
+    LaunchedEffect(noteId) {
+        viewModel.loadNote(noteId)
+    }
 
     Scaffold(
         topBar = {
@@ -60,7 +58,7 @@ fun NoteEditScreen(
                 },
                 title = {
                     Text(
-                        text = if (existingNote == null) "Nova biljeska" else "Uredi biljesku",
+                        text = if (noteId == -1) "Nova biljeska" else "Uredi biljesku",
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
@@ -81,10 +79,13 @@ fun NoteEditScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            if (viewModel.createdAt.isNotBlank()) {
+                Text(text = "Datum kreiranja: ${viewModel.createdAt}")
+            }
             // Polje za unos naslova
             OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
+                value = viewModel.title,
+                onValueChange = { viewModel.title = it },
                 label = { Text("Naslov") },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -97,8 +98,8 @@ fun NoteEditScreen(
             )
             // Polje za unos opisa
             OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
+                value = viewModel.content,
+                onValueChange = { viewModel.content = it },
                 label = { Text("Opis")},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,9 +115,7 @@ fun NoteEditScreen(
 
             // Gumb za spremanje
             Button(
-                onClick = {
-                    onSaveClick(title, description)
-                },
+                onClick = onDoneClick,
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF006CE0),
@@ -125,8 +124,7 @@ fun NoteEditScreen(
                 shape = RoundedCornerShape(20.dp),
                 contentPadding = PaddingValues(vertical = 14.dp)
             ) {
-                Text(
-                    text = "Spremi")
+                Text("Done")
             }
         }
 

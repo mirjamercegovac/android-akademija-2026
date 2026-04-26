@@ -1,4 +1,4 @@
-package com.example.notesapp
+package com.example.notesapp.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notesapp.model.Note
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -99,13 +100,13 @@ fun NotesListScreen(
 
 
                         Text(
-                            text = note.description,
+                            text = note.content,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
 
                         Text(
-                            text = note.date,
+                            text = note.createdAt,
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFF006CE0)
                         )
