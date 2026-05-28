@@ -2,6 +2,7 @@ package com.example.notesapp.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,7 +23,8 @@ import com.example.notesapp.viewmodel.TaskListViewModelFactory
 @Composable
 fun TaskieApp(){
     val navController = rememberNavController()
-    val appContainer = remember { AppContainer() }
+    val context = LocalContext.current
+    val appContainer = remember { AppContainer(context) }
 
     NavHost(
         navController = navController,

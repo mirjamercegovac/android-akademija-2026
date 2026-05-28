@@ -16,12 +16,24 @@ class TaskListViewModel (
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
+    init {
+        observeTasks()
+    }
+
+    private fun observeTasks(){
+        viewModelScope.launch {
+            repository.getTasksFlow().collect { localTasks ->
+                tasks = localTasks
+            }
+        }
+    }
+
     fun loadTasks() {
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
             try {
-                tasks = repository.getTasks()
+                repository.refreshTasks()
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Failed to load tasks"
             } finally {
@@ -34,7 +46,6 @@ class TaskListViewModel (
         viewModelScope.launch {
             try {
                 repository.deleteTask(id)
-                loadTasks()
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Failed to delete task"
             }

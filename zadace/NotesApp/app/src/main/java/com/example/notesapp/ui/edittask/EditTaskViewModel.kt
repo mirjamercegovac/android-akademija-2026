@@ -19,8 +19,12 @@ class EditTaskViewModel (
         viewModelScope.launch {
             try {
                 val task = repository.getTaskById(id)
-                title = task.title
-                body = task.body
+                if (task != null) {
+                    title = task.title
+                    body = task.body
+                } else {
+                    errorMessage = "Task not found"
+                }
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Failed to load task"
             }
