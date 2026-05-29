@@ -31,4 +31,10 @@ interface TaskDao{
 
     @Query("DELETE FROM tasks")
     suspend fun deleteAllTasks()
+
+    @Query("UPDATE tasks SET isFavorite = :isFavorite WHERE id = :id")
+    suspend fun updateFavorite(id: String, isFavorite: Boolean)
+
+    @Query("SELECT * FROM tasks")
+    suspend fun getAllTasksSnapshot(): List<TaskEntity>
 }

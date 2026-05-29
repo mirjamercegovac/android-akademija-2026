@@ -15,6 +15,7 @@ class EditTaskViewModel (
 ): ViewModel() {
     var title by mutableStateOf("")
     var body by mutableStateOf("")
+    var category by mutableStateOf("Other")
     var errorMessage by mutableStateOf<String?>(null)
 
     fun loadTask(id: String) {
@@ -25,6 +26,7 @@ class EditTaskViewModel (
                 if (task != null) {
                     title = task.title
                     body = task.body
+                    category = task.category
                     logger.debug("Task loaded successfully")
                 } else {
                     errorMessage = "Task not found"
@@ -40,7 +42,7 @@ class EditTaskViewModel (
         viewModelScope.launch {
             logger.debug("Creating task")
             try {
-                repository.createTask(title, body)
+                repository.createTask(title, body, category)
                 onDone()
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Failed to create task"
@@ -53,12 +55,18 @@ class EditTaskViewModel (
         viewModelScope.launch {
             logger.debug("Updating task id=$id")
             try {
-                repository.updateTask(id, title, body)
+                repository.updateTask(id, title, body, category)
                 onDone()
             } catch (e: Exception) {
                 errorMessage = e.message ?: "Failed to update task"
                 logger.error("Failed to update task", e)
             }
         }
+    }
+    fun resetForNewTask() {
+        title = ""
+        body = ""
+        category = "Other"
+        errorMessage = null
     }
 }

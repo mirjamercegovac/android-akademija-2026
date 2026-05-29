@@ -6,5 +6,8 @@ import kotlinx.serialization.Serializable
 data class Task (
     val id: String,
     val title: String,
-    val body: String
+    val body: String,
+    val category: String = "Other",
+    val createdAt: String = "",
+    val isFavorite: Boolean = false
 )

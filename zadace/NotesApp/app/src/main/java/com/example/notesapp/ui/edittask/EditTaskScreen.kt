@@ -1,8 +1,11 @@
 package com.example.notesapp.ui.edittask
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,8 +45,7 @@ fun EditTaskScreen(
         if (taskId != null) {
             viewModel.loadTask(taskId)
         } else {
-            viewModel.title = ""
-            viewModel.body = ""
+            viewModel.resetForNewTask()
         }
     }
 
@@ -111,6 +113,36 @@ fun EditTaskScreen(
                     cursorColor = Color(0xFF006CE0)
                 )
             )
+            Text(
+                text = "Category",
+                fontWeight = FontWeight.Bold
+            )
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                CategoryChip(
+                    text = "Personal",
+                    isSelected = viewModel.category == "Personal",
+                    onClick = { viewModel.category = "Personal" }
+                )
+                CategoryChip(
+                    text = "Work",
+                    isSelected = viewModel.category == "Work",
+                    onClick = { viewModel.category = "Work" }
+                )
+                CategoryChip(
+                    text = "Study",
+                    isSelected = viewModel.category == "Study",
+                    onClick = { viewModel.category = "Study" }
+                )
+                CategoryChip(
+                    text = "Other",
+                    isSelected = viewModel.category == "Other",
+                    onClick = { viewModel.category = "Other" }
+                )
+            }
 
             Button(
                 onClick = {
@@ -136,4 +168,23 @@ fun EditTaskScreen(
             }
         }
     }
+}
+
+@Composable
+private fun CategoryChip(
+    text: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Text(
+        text = text,
+        color = if (isSelected) Color.White else Color(0xFF006CE0),
+        modifier = Modifier
+            .background(
+                color = if (isSelected) Color(0xFF006CE0) else Color.Transparent,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+    )
 }

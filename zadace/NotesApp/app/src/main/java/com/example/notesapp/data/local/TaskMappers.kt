@@ -7,6 +7,9 @@ fun Task.toEntity(): TaskEntity{
         id = id,
         title = title,
         body = body,
+        category = category,
+        createdAt = createdAt,
+        isFavorite = isFavorite,
         isSynced = true
     )
 }
@@ -15,6 +18,9 @@ fun TaskEntity.toTask(): Task{
     return Task(
         id = id,
         title = title,
-        body = body
+        body = body,
+        category = category,
+        createdAt = createdAt,
+        isFavorite = isFavorite
     )
 }

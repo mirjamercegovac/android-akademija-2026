@@ -9,5 +9,8 @@ data class TaskEntity (
     val id: String,
     val title: String,
     val body: String,
+    val category: String = "Other",
+    val createdAt: String = "",
+    val isFavorite: Boolean = false,
     val isSynced: Boolean = true
 )

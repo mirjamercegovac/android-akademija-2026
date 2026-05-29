@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun LoginScreen(
@@ -46,6 +47,7 @@ fun LoginScreen(
                 text = "Taskie Login",
                 modifier = Modifier.fillMaxWidth(),
                 fontWeight = FontWeight.Bold,
+                fontSize = 26.sp,
                 textAlign = TextAlign.Center
             )
             OutlinedTextField(
