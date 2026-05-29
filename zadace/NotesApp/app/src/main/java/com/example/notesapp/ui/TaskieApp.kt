@@ -1,39 +1,30 @@
 package com.example.notesapp.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.notesapp.AppContainer
 import com.example.notesapp.ui.edittask.EditTaskScreen
 import com.example.notesapp.ui.edittask.EditTaskViewModel
 import com.example.notesapp.ui.login.LoginScreen
 import com.example.notesapp.ui.login.LoginViewModel
 import com.example.notesapp.ui.tasklist.TaskListScreen
 import com.example.notesapp.ui.tasklist.TaskListViewModel
-import com.example.notesapp.viewmodel.EditTaskViewModelFactory
-import com.example.notesapp.viewmodel.LoginViewModelFactory
-import com.example.notesapp.viewmodel.TaskListViewModelFactory
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TaskieApp(){
     val navController = rememberNavController()
-    val context = LocalContext.current
-    val appContainer = remember { AppContainer(context) }
+
 
     NavHost(
         navController = navController,
         startDestination = "login"
     ) {
         composable("login") {
-            val loginViewModel: LoginViewModel = viewModel(
-                factory = LoginViewModelFactory(appContainer.taskRepository)
-            )
+            val loginViewModel: LoginViewModel = koinViewModel()
 
             LoginScreen(
                 viewModel = loginViewModel,
@@ -44,9 +35,8 @@ fun TaskieApp(){
         }
 
         composable("task_list") {
-            val taskListViewModel: TaskListViewModel = viewModel(
-                factory = TaskListViewModelFactory(appContainer.taskRepository)
-            )
+            val taskListViewModel: TaskListViewModel = koinViewModel()
+
             TaskListScreen(
                 viewModel = taskListViewModel,
                 onAddClick = {
@@ -59,19 +49,13 @@ fun TaskieApp(){
         }
 
         composable("edit_task") {
-            val editTaskViewModel: EditTaskViewModel = viewModel(
-                factory = EditTaskViewModelFactory(appContainer.taskRepository)
-            )
+            val editTaskViewModel: EditTaskViewModel = koinViewModel()
 
             EditTaskScreen(
                 taskId = null,
                 viewModel = editTaskViewModel,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onDoneClick = {
-                    navController.popBackStack()
-                }
+                onBackClick = { navController.popBackStack() },
+                onDoneClick = { navController.popBackStack() }
             )
         }
 
@@ -83,19 +67,13 @@ fun TaskieApp(){
         ) { backStackEntry ->
             val taskId = backStackEntry.arguments?.getString("taskId")
 
-            val editTaskViewModel: EditTaskViewModel = viewModel(
-                factory = EditTaskViewModelFactory(appContainer.taskRepository)
-            )
+            val editTaskViewModel: EditTaskViewModel = koinViewModel()
 
             EditTaskScreen(
                 taskId = taskId,
                 viewModel = editTaskViewModel,
-                onBackClick = {
-                    navController.popBackStack()
-                },
-                onDoneClick = {
-                    navController.popBackStack()
-                }
+                onBackClick = { navController.popBackStack() },
+                onDoneClick = { navController.popBackStack() }
             )
         }
     }

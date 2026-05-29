@@ -1,6 +1,7 @@
 package com.example.notesapp.data.network
 
 import com.example.notesapp.data.network.apiservice.RetrofitTaskieApiService
+import com.example.notesapp.di.AppLogger
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -10,14 +11,16 @@ import retrofit2.Retrofit
 object RetrofitTaskieInstance{
     private const val BASE_URL = "https://ada-taskie-backend.osc-fr1.scalingo.io/"
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
+    fun create(logger: AppLogger): RetrofitTaskieApiService {
+        logger.debug("Creating Retrofit Taskie API service")
 
-    private val client = OkHttpClient.Builder().build()
+        val json = Json {
+            ignoreUnknownKeys = true
+        }
 
-    val api: RetrofitTaskieApiService by lazy {
-        Retrofit.Builder()
+        val client = OkHttpClient.Builder().build()
+
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(

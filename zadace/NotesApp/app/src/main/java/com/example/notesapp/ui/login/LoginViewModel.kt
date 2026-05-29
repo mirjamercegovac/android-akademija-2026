@@ -6,10 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notesapp.data.repository.TaskRepository
+import com.example.notesapp.di.AppLogger
 import kotlinx.coroutines.launch
 
 class LoginViewModel (
-    private val repository: TaskRepository
+    private val repository: TaskRepository,
+    private val logger: AppLogger
 ): ViewModel() {
 
     var username by mutableStateOf("")
@@ -23,11 +25,14 @@ class LoginViewModel (
         viewModelScope.launch {
             isLoading = true
             errorMessage = null
+            logger.debug("Login button clicked")
             try {
                 repository.login(username, password)
                 loginSuccess = true
+                logger.debug("Login successful")
             } catch (e: Exception){
                 errorMessage = e.message ?: "Login failed"
+                logger.error("Login failed", e)
             } finally {
                 isLoading = false
             }
