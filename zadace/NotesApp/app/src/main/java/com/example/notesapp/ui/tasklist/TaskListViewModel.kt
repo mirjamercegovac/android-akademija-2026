@@ -21,6 +21,13 @@ class TaskListViewModel (
     var allTasks by mutableStateOf<List<Task>>(emptyList())
     var searchQuery by mutableStateOf("")
 
+    var totalTasks by mutableStateOf(0)
+    var favoriteTasks by mutableStateOf(0)
+    var workTasks by mutableStateOf(0)
+    var studyTasks by mutableStateOf(0)
+    var personalTasks by mutableStateOf(0)
+    var otherTasks by mutableStateOf(0)
+
     init {
         observeTasks()
     }
@@ -31,8 +38,18 @@ class TaskListViewModel (
             repository.getTasksFlow().collect { localTasks ->
                 allTasks = localTasks.sortedByDescending { it.isFavorite }
                 filterTasks()
+                updateStats(localTasks)
             }
         }
+    }
+
+    private fun updateStats(taskList: List<Task>) {
+        totalTasks = taskList.size
+        favoriteTasks = taskList.count { it.isFavorite }
+        workTasks = taskList.count { it.category == "Work" }
+        studyTasks = taskList.count { it.category == "Study" }
+        personalTasks = taskList.count { it.category == "Personal" }
+        otherTasks = taskList.count { it.category == "Other" }
     }
 
     fun onSearchQueryChange(query: String) {

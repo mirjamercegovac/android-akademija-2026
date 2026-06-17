@@ -1,6 +1,8 @@
 package com.example.notesapp.ui.tasklist
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -161,6 +163,36 @@ fun TaskListScreen(
                             cursorColor = Color(0xFF006CE0)
                         )
                     )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        SummaryInfoCard(
+                            number = viewModel.totalTasks.toString(),
+                            title = "Tasks",
+                            subtitle = "Total",
+                            isPrimary = true,
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        SummaryInfoCard(
+                            number = viewModel.favoriteTasks.toString(),
+                            title = "Favorites",
+                            subtitle = "Marked",
+                            isPrimary = false,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        SummaryChip("Work ${viewModel.workTasks}", Modifier.weight(1f))
+                        SummaryChip("Study ${viewModel.studyTasks}", Modifier.weight(1f))
+                        SummaryChip("Personal ${viewModel.personalTasks}", Modifier.weight(1f))
+                        SummaryChip("Other ${viewModel.otherTasks}", Modifier.weight(1f))
+                    }
 
                     viewModel.errorMessage?.let {
                         Text(
@@ -255,5 +287,79 @@ fun TaskListScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun SummaryInfoCard(
+    number: String,
+    title: String,
+    subtitle: String,
+    isPrimary: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = if (isPrimary) Color(0xFF2F6BFF) else Color(0xFFEAF2FF)
+    val titleColor = if (isPrimary) Color.White else Color(0xFF5D7FBE)
+    val numberColor = if (isPrimary) Color.White else Color(0xFF1F2A44)
+    val subtitleColor = if (isPrimary) Color(0xFFDCE7FF) else Color(0xFF6E86B3)
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = backgroundColor
+        ),
+        border = if (isPrimary) null else BorderStroke(1.dp, Color(0xFFD4E4FF)),
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = titleColor
+            )
+
+            Text(
+                text = number,
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = numberColor
+            )
+
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = subtitleColor
+            )
+        }
+    }
+}
+
+@Composable
+private fun SummaryChip(
+    text: String,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = Color(0xFFF7FAFF),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .border(
+                width = 1.dp,
+                color = Color(0xFFD8E6FF),
+                shape = RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+    ) {
+        Text(
+            text = text,
+            color = Color(0xFF006CE0),
+            style = MaterialTheme.typography.bodySmall,
+            fontWeight = FontWeight.Medium
+        )
     }
 }
